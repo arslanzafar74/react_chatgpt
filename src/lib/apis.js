@@ -18,6 +18,8 @@ const API = axios.create({
      
     )
     .then((res) => {
+      console.log("res api");
+      console.log(res);
       if (res?.data) {
         return {data: res.data, success: res.data.success};
       } else {
@@ -25,8 +27,28 @@ const API = axios.create({
       }
     })
     .catch((error) => {
-      return error.response;
+      console(error.response) ;
     });
   };
 
- 
+  
+
+  // export const getUserDataApi = (user) => {
+  //   console.log("user")
+  //   return axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+  //     headers: {
+  //         Authorization: `Bearer ${user.access_token}`,
+  //         Accept: 'application/json'
+  //     }
+  // })
+  //   .then((res) => {
+  //     if (res?.data) {
+  //       return {data: res.data, success: res.data.success};
+  //     } else {
+  //       return {data: res, success: false};
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     return error.response;
+  //   });
+  // };

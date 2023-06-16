@@ -1,11 +1,14 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, Alert, CardText } from 'reactstrap';
+import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, Alert, CardText, CardFooter } from 'reactstrap';
 import { sendMessage } from '../lib/apis';
-import { useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import { googleLogout } from '@react-oauth/google';
 
 const Home = (e) => {
+    const { state } = useLocation();
+    const [profile, setProfile] = useState('');
+    console.log(state);
     const navigate = useNavigate();
     const [message, getUserMessage] = useState('');
     const [messages, setMessages] = useState([]);
@@ -15,19 +18,12 @@ const Home = (e) => {
     const onDismiss = () => setVisible(false);
     const [authenticated, setAuthenticated] = useState(null);
     useEffect(() => {
+        setProfile(state.profile);
         const loggedInUser = localStorage.getItem("authenticated");
-     
         if (loggedInUser) {
             setAuthenticated(loggedInUser);
         }
       }, []);
-      console.log("authenticated home");
-      console.log(authenticated);
-    //   if (authenticated !==true) {
-       
-    //     return <Navigate replace to="/" />;
-    //     }
-
     const logOut = () => {
         localStorage.setItem('authenticated',false)
         console.log(localStorage.getItem('authenticated'))
@@ -36,7 +32,6 @@ const Home = (e) => {
 
     };
     const onSendButtonClick = async (e) => {
-
         if (message != '') {
             await sendMessage(message).then((res) => {
                 console.log("res");
@@ -64,9 +59,8 @@ const Home = (e) => {
         <>
             <div className='container'>
             <Row>
-            <Button onClick={logOut} outline block color="warning" size="lg" >
-                                            Logout
-                                        </Button>
+            
+                                            
             <Col lg={8}>
                     <Card className="my-2 " outline color='primary'>
                         <CardImg
@@ -125,17 +119,20 @@ const Home = (e) => {
                     </Card>
                 </Col>
                 <Col lg={4}>
-                    <Card className='my-2'>
-                        <CardImg
+                    <Card className='my-2 '>
+                        <img
                             alt="Card image cap"
-                            src={require('./../assets/images/man.png')}
+                            src={profile.picture}
                             style={{ width: "200px", height: "200px" }}
-                            className=' mx-auto d-flex mb-5'
+                            className=' mx-auto d-flex mb-3 rounded-circle mt-2'
                         />
                         <CardBody className='text-center'>
-                           <CardText>Name:Arslan Zafar </CardText>
-                           <CardText>Email:Arslan Zafar </CardText>
+                           <CardText>Name:{profile.name} </CardText>
+                           <CardText>Email:{profile.email}  </CardText>
                         </CardBody>
+                        <CardFooter className='border-0 bg-white'>
+                        <Button onClick={logOut} outline block color="info" size="lg" >Logout</Button>
+                        </CardFooter>
                     </Card>
                 </Col>
             </Row>

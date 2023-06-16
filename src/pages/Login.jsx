@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, FormGroup } from 'reactstrap';
 import axios from 'axios';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { getUserDataApi, postSignin } from '../lib/apis';
 const Login = (e) => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [profiles, setProfile] = useState(null);
+    const [profile, setProfile] = useState(null);
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => setUser(codeResponse),
         onError: (error) => console.log('Login Failed:', error)
@@ -15,23 +16,48 @@ const Login = (e) => {
     useEffect(
         () => {
             if (user) {
-                axios
-                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                        headers: {
-                            Authorization: `Bearer ${user.access_token}`,
-                            Accept: 'application/json'
-                        }
-                    })
-                    .then((res) => {
+                getUserDataApi(user).then((res) => {
+                    console.log(res);
+                    let profile = res.data;
+                    if (res.success == true) {
                         localStorage.setItem('authenticated', true)
-                        setProfile(res.data);
-                        navigate('/home');
-                    })
-                    .catch((err) => console.log(err));
+                        setProfile(profile);
+                         postSignin(profile).then((res) => {
+                            console.log(res);
+                            if(res.success == true)
+                              {
+                                navigate('/home', { state: { profile: profile } });
+                              }
+                              else
+                              {
+                              alert('Error');
+                              }
+                            });
+                        // navigate('/home', { state: { profile: res.data } });
+
+                    } //res.success is true
+                    else {
+                        console.log(res)
+                    }
+                });
+                // axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                //         headers: {
+                //             Authorization: `Bearer ${user.access_token}`,
+                //             Accept: 'application/json'
+                //         }
+                //     })
+                //     .then((res) => {
+                //         localStorage.setItem('authenticated', true)
+                //         setProfile(res.data);
+                //         navigate('/home',{state:{profile:res.data}});
+                //     })
+                //     .catch((err) => console.log(err));
             }
         },
         [user]
     );
+
+    
     const logOut = () => {
         localStorage.setItem('authenticated', false)
         console.log(localStorage.getItem('authenticated'))
@@ -80,7 +106,6 @@ const Login = (e) => {
                                         Password
                                     </Label>
                                     <Input
-                                        id="examplePassword"
                                         name="password"
                                         placeholder="Password"
                                         type="password"
@@ -91,7 +116,7 @@ const Login = (e) => {
                                 {' '}
                                 <Row className='mt-4'>
                                     {/* <Col lg={6}> */}
-                                        {/* {profiles ? (
+                                    {/* {profiles ? (
                 <div>
                     <img src={profiles.picture} alt="user image" />
                     <h3>User Logged in</h3>

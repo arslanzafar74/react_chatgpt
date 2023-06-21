@@ -2,12 +2,11 @@
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, FormGroup } from 'reactstrap';
-import axios from 'axios';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getUserDataApi, postSignin } from '../lib/apis';
-const Login = (e) => {
+const Login:React.FC = () => {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<any>(null);
     const [profile, setProfile] = useState(null);
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => setUser(codeResponse),
@@ -19,12 +18,12 @@ const Login = (e) => {
                 getUserDataApi(user).then((res) => {
                     console.log(res);
                     let profile = res.data;
-                    if (res.success == true) {
-                        localStorage.setItem('authenticated', true)
+                    if (res.success === true) {
+                        localStorage.setItem('authenticated', 'true')
                         setProfile(profile);
                          postSignin(profile).then((res) => {
                             console.log(res);
-                            if(res.success == true)
+                            if(res.success === true)
                               {
                                 navigate('/home', { state: { profile: profile } });
                               }
@@ -59,7 +58,7 @@ const Login = (e) => {
 
     
     const logOut = () => {
-        localStorage.setItem('authenticated', false)
+        localStorage.setItem('authenticated', 'false')
         console.log(localStorage.getItem('authenticated'))
         googleLogout();
         setProfile(null);

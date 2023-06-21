@@ -21,15 +21,14 @@ export const sendMessage = (message) => {
       console.log("res api");
       console.log(res);
       if (res?.data) {
-        return { data: res.data, success: res.data.success };
+        return { data: res.data, success: true };
       } else {
         return { data: res, success: false };
       }
     })
     .catch((error) => {
       console.log(error.message);
-      return { data: { message: error.message, success: false } };
-
+      return error.message;
     });
 };
 

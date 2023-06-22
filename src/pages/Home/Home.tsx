@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, Alert, CardText, CardFooter } from 'reactstrap';
+import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, Alert } from 'reactstrap';
 import { sendMessage } from '../../lib/apis';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { googleLogout } from '@react-oauth/google';
@@ -23,7 +23,6 @@ const Home: React.FC = () => {
     }, []);
     const logOut = () => {
         localStorage.setItem('authenticated', 'false')
-        console.log(localStorage.getItem('authenticated'))
         googleLogout();
         navigate('/')
 
@@ -78,7 +77,7 @@ const Home: React.FC = () => {
                                                 <Row>
                                                     {messages.map((msg, index) =>
                                                         <>
-                                                            {msg.type == 1?(
+                                                            {msg.type === 1?(
                                                                 <Col lg={12} className='mt-2'>
                                                                 <span className='bg-success px-3 py-2 rounded-pill text-white' style={{ float: "right" }}>{msg.text}</span>
                                                                 </Col>

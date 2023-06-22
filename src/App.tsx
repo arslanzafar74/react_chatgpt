@@ -1,9 +1,8 @@
 import './App.css';
-import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './pages/Home/Home';
 import Login from './pages/Login'; 
-import AuthRoutes from './components/AuthRoutes'
+import AuthRoutes from './routes/AuthRoutes'
 function App() {
   return (
     <BrowserRouter>

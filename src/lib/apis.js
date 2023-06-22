@@ -10,10 +10,15 @@ const API = axios.create({
 });
 
 export const sendMessage = (message) => {
+  const headers = { 'Authorization': 'Bearer '+localStorage.getItem('token') };
   return API.get(
     `/open-ai`,
     {
+      headers,
+    },
+    {
       "message": message,
+      
     },
 
   )
@@ -40,6 +45,7 @@ export const postSignin = (user) => {
       "email":user.email,
       "name":user.name,
       "image":user.picture,
+      "google_id":user.id,
     },
    
   )

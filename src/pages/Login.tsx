@@ -1,10 +1,9 @@
 
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, FormGroup } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { getUserDataApi, postSignin } from '../lib/apis';
-import { error } from 'console';
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState<any>(null);
@@ -22,8 +21,10 @@ const Login: React.FC = () => {
                         localStorage.setItem('authenticated', 'true')
                         setProfile(profile);
                         postSignin(profile).then((res) => {
-                            console.log(res);
                             if (res.data.success === true) {
+                                console.log(res.data.token);
+                                localStorage.setItem('token', res.data.token)
+
                                 navigate('/home', { state: { profile: profile } });
                             }
                             else {
@@ -44,14 +45,6 @@ const Login: React.FC = () => {
         },
         [user]
     );
-
-
-    const logOut = () => {
-        localStorage.setItem('authenticated', 'false')
-        console.log(localStorage.getItem('authenticated'))
-        googleLogout();
-        setProfile(null);
-    };
 
     return (
         <>

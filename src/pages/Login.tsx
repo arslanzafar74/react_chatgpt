@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, CardBody, CardImg, CardTitle, Col, Input, Label, Row, Form, FormGroup } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { getUserDataApi, postSignin } from '../lib/apis';
-const Login:React.FC = () => {
+import { error } from 'console';
+const Login: React.FC = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState<any>(null);
     const [profile, setProfile] = useState(null);
@@ -16,47 +17,35 @@ const Login:React.FC = () => {
         () => {
             if (user) {
                 getUserDataApi(user).then((res) => {
-                    console.log(res);
-                    let profile = res.data;
-                    if (res.success === true) {
+                    if (res.status === 200) {
+                        let profile = res.data;
                         localStorage.setItem('authenticated', 'true')
                         setProfile(profile);
-                         postSignin(profile).then((res) => {
+                        postSignin(profile).then((res) => {
                             console.log(res);
-                            if(res.success === true)
-                              {
+                            if (res.data.success === true) {
                                 navigate('/home', { state: { profile: profile } });
-                              }
-                              else
-                              {
-                              alert('Error');
-                              }
-                            });
-                        // navigate('/home', { state: { profile: res.data } });
+                            }
+                            else {
+                                alert('Error');
+                            }
+                        }).catch((error) => {
+                            console.log(error.message);
+                        });;
 
                     } //res.success is true
                     else {
                         console.log(res)
                     }
+                }).catch((error) => {
+                    console.log(error.message);
                 });
-                // axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
-                //         headers: {
-                //             Authorization: `Bearer ${user.access_token}`,
-                //             Accept: 'application/json'
-                //         }
-                //     })
-                //     .then((res) => {
-                //         localStorage.setItem('authenticated', true)
-                //         setProfile(res.data);
-                //         navigate('/home',{state:{profile:res.data}});
-                //     })
-                //     .catch((err) => console.log(err));
             }
         },
         [user]
     );
 
-    
+
     const logOut = () => {
         localStorage.setItem('authenticated', 'false')
         console.log(localStorage.getItem('authenticated'))
@@ -114,18 +103,6 @@ const Login:React.FC = () => {
                                 </FormGroup>
                                 {' '}
                                 <Row className='mt-4'>
-                                    {/* <Col lg={6}> */}
-                                    {/* {profiles ? (
-                <div>
-                    <img src={profiles.picture} alt="user image" />
-                    <h3>User Logged in</h3>
-                    <p>Name: {profiles.name}</p> 
-                    <p>Email Address: {profiles.email}</p>
-                </div>
-            ) : (
-                <Button outline block color="primary" size="lg" onClick={() => login()}>Login With G+</Button>
-            )} */}
-
                                     {/* </Col> */}
                                     <Col lg={12}>
                                         {/* <Button onClick={logOut} outline block color="warning" size="lg" >

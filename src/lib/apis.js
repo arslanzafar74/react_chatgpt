@@ -17,45 +17,18 @@ export const sendMessage = (message) => {
     },
 
   )
-    .then((res) => {
-      console.log("res api");
-      console.log(res);
-      if (res?.data) {
-        return { data: res.data, success: true };
-      } else {
-        return { data: res, success: false };
-      }
-    })
-    .catch((error) => {
-      console.log(error.message);
-      return error.message;
-    });
 };
 
 
 
 export const getUserDataApi = (user) => {
-  console.log("user")
+  console.log("Google Api")
   return axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
     headers: {
       Authorization: `Bearer ${user.access_token}`,
       Accept: 'application/json'
     }
   })
-    .then((res) => {
-      console.log('hello');
-      console.log(res);
-      if (res?.data) {
-        return { data: res.data, success:true };
-      } else {
-        return { data: res, success: false };
-      }
-    })
-    .catch((error) => {
-      console.log(error.message);
-      // return { data: { message: error.message, success: false } };
-      return error.message;
-    });
 };
 
 export const postSignin = (user) => {
@@ -70,16 +43,4 @@ export const postSignin = (user) => {
     },
    
   )
-  .then((res) => {
-    console.log('Singup');
-    console.log(res);
-    if (res?.data) {
-      return {data: res.data, success: res.data.success};
-    } else {
-      return {data: res, success: false};
-    }
-  })
-  .catch((error) => {
-    return error.response;
-  });
 };

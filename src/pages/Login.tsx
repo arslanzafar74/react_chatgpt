@@ -50,7 +50,7 @@ const Login: React.FC = () => {
         <>
             <div className='container'>
                 <Col lg={5} className='mx-auto mt-5' >
-                    <Card className='mt-5' >
+                    <Card className='mt-5 pb-5' >
                         <CardTitle tag="h3" className='text-center mt-4'>
                             Login
                         </CardTitle>
@@ -62,46 +62,13 @@ const Login: React.FC = () => {
                                 className=' mx-auto d-flex mb-5'
                             />
                             <Form >
-                                <FormGroup>
-                                    <Label
-                                        for="exampleEmail"
-                                        hidden
-                                    >
-                                        Email
-                                    </Label>
-                                    <Input
-                                        id="exampleEmail"
-                                        name="email"
-                                        placeholder="Email"
-                                        type="email"
-                                        bsSize="lg"
-                                        className="mb-3"
-                                    />
-                                </FormGroup>
-                                {' '}
-                                <FormGroup>
-                                    <Label
-                                        for="examplePassword"
-                                        hidden
-                                    >
-                                        Password
-                                    </Label>
-                                    <Input
-                                        name="password"
-                                        placeholder="Password"
-                                        type="password"
-                                        bsSize="lg"
-                                        className="mb-3"
-                                    />
-                                </FormGroup>
-                                {' '}
                                 <Row className='mt-4'>
                                     {/* </Col> */}
                                     <Col lg={12}>
                                         {/* <Button onClick={logOut} outline block color="warning" size="lg" >
                                             Logout
                                         </Button> */}
-                                        <Button outline block color="primary" size="lg" onClick={() => login()}>Login With G+</Button>
+                                        <Button className='mt-5' outline block color="primary" size="lg" onClick={() => login()}>Login With Google</Button>
                                     </Col>
                                 </Row>
 
